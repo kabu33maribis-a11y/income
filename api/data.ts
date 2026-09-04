@@ -1,5 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import { ensureStore, readSnapshot, writeSnapshot } from '../server/store'
+import {
+  ensureTurso,
+  hasTurso,
+  readTursoSnapshot,
+  writeTursoSnapshot,
+} from '../server/turso'
+
+export const config = {
+  runtime: 'nodejs',
+}
 
 function isSnapshot(v: unknown): boolean {
   if (!v || typeof v !== 'object') return false
@@ -12,9 +21,17 @@ export default async function handler(
   res: VercelResponse,
 ): Promise<void> {
   try {
-    await ensureStore()
+    if (!hasTurso()) {
+      if (req.method === 'GET') {
+        res.status(200).json({ empty: true })
+        return
+      }
+      res.status(503).json({ error: 'turso is not configured' })
+      return
+    }
+    await ensureTurso()
     if (req.method === 'GET') {
-      const data = await readSnapshot()
+      const data = await readTursoSnapshot()
       res.status(200).json(data ?? { empty: true })
       return
     }
@@ -23,7 +40,7 @@ export default async function handler(
         res.status(400).json({ error: 'invalid snapshot' })
         return
       }
-      await writeSnapshot(req.body)
+      await writeTursoSnapshot(req.body)
       res.status(200).json({ ok: true })
       return
     }
