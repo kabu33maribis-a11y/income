@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
 import {
   ensureTurso,
   hasTurso,
@@ -7,7 +6,14 @@ import {
 } from '../server/turso'
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
+}
+
+function json(status: number, body: unknown): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  })
 }
 
 function isSnapshot(v: unknown): boolean {
@@ -16,37 +22,26 @@ function isSnapshot(v: unknown): boolean {
   return o.version === 2 && !!o.private && !!o.stock
 }
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-): Promise<void> {
+export default async function handler(req: Request): Promise<Response> {
   try {
     if (!hasTurso()) {
-      if (req.method === 'GET') {
-        res.status(200).json({ empty: true })
-        return
-      }
-      res.status(503).json({ error: 'turso is not configured' })
-      return
+      if (req.method === 'GET') return json(200, { empty: true })
+      return json(503, { error: 'turso is not configured' })
     }
     await ensureTurso()
     if (req.method === 'GET') {
       const data = await readTursoSnapshot()
-      res.status(200).json(data ?? { empty: true })
-      return
+      return json(200, data ?? { empty: true })
     }
     if (req.method === 'PUT') {
-      if (!isSnapshot(req.body)) {
-        res.status(400).json({ error: 'invalid snapshot' })
-        return
-      }
-      await writeTursoSnapshot(req.body)
-      res.status(200).json({ ok: true })
-      return
+      const parsed: unknown = await req.json()
+      if (!isSnapshot(parsed)) return json(400, { error: 'invalid snapshot' })
+      await writeTursoSnapshot(parsed)
+      return json(200, { ok: true })
     }
-    res.status(405).json({ error: 'method not allowed' })
+    return json(405, { error: 'method not allowed' })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'store error'
-    res.status(500).json({ error: message })
+    return json(500, { error: message })
   }
 }
