@@ -4,8 +4,8 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  padding: 0.55rem 0.75rem calc(0.75rem + var(--safe-b));
+  gap: 0.5rem;
+  padding: calc(0.5rem + var(--safe-t)) 0.65rem calc(0.65rem + var(--safe-b));
 }
 
 .app-shell.is-stock {
@@ -38,7 +38,7 @@
 .chrome__row {
   display: flex;
   align-items: stretch;
-  gap: 0.6rem;
+  gap: 0.4rem;
 }
 
 .chrome__nav {
@@ -125,14 +125,16 @@
 
 .mode-bar__btn {
   touch-action: manipulation;
-  min-height: 2.6rem;
+  min-height: 2.35rem;
   min-width: 0;
   padding: 0 0.2rem;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   letter-spacing: 0.02em;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--muted);
 }
 
@@ -168,7 +170,7 @@
 
 
 .month-panel {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
   background: var(--paper);
@@ -182,9 +184,9 @@
 
 .month-header {
   display: grid;
-  grid-template-columns: 2.75rem 1fr 2.75rem;
+  grid-template-columns: 2.4rem 1fr 2.4rem;
   align-items: center;
-  padding: 0.85rem 0.5rem 0.55rem;
+  padding: 0.5rem 0.35rem 0.35rem;
   border-bottom: 1px solid var(--line);
   background: linear-gradient(180deg, #fcfdfb 0%, #f1f6f1 100%);
 }
@@ -194,9 +196,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.12rem;
+  gap: 0.08rem;
   text-align: center;
-  font-size: 1.15rem;
+  font-size: 1.02rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--accent);
@@ -207,7 +209,7 @@
 }
 
 .month-title__net {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -226,10 +228,10 @@
 }
 
 .nav-btn {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
   border-radius: 999px;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   line-height: 1;
   color: var(--accent);
   background: rgba(26, 58, 50, 0.06);
@@ -243,8 +245,8 @@
 .weekday-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding: 0.35rem 0.35rem 0;
-  gap: 0.15rem;
+  padding: 0.2rem 0.25rem 0;
+  gap: 0.1rem;
 }
 
 .weekday {
@@ -265,12 +267,12 @@
 }
 
 .month-grid {
-  flex: 1;
+  flex: none;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: minmax(4.6rem, 1fr);
-  gap: 0.15rem;
-  padding: 0.25rem 0.35rem 0.45rem;
+  grid-auto-rows: 2.45rem;
+  gap: 0.08rem;
+  padding: 0.12rem 0.22rem 0.22rem;
 }
 
 .month-grid.is-slide-next {
@@ -313,14 +315,15 @@
 .day-cell {
   position: relative;
   width: 100%;
-  min-height: 4.6rem;
-  border-radius: 0.55rem;
+  min-height: 0;
+  height: 100%;
+  border-radius: 0.45rem;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.55);
-  padding: 0.2rem 0.15rem 0.25rem;
+  padding: 0.1rem 0.08rem 0.12rem;
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
+  gap: 0.02rem;
   text-align: left;
   font: inherit;
   touch-action: pan-y;
@@ -346,12 +349,11 @@
 }
 
 .day-cell__num {
-  position: absolute;
-  top: 0.2rem;
-  right: 0.15rem;
-  font-size: 0.72rem;
+  align-self: flex-end;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding-right: 0.1rem;
+  line-height: 1.15;
+  padding-right: 0.06rem;
   color: var(--ink);
 }
 
@@ -359,11 +361,11 @@
   color: #fff;
   background: var(--today-mark);
   border-radius: 999px;
-  min-width: 1.4rem;
-  height: 1.4rem;
+  min-width: 1.15rem;
+  height: 1.15rem;
   display: inline-grid;
   place-items: center;
-  padding: 0 0.22rem;
+  padding: 0 0.18rem;
 }
 
 .day-cell__stamps {
@@ -380,9 +382,10 @@
   flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.02rem;
-  font-size: 0.58rem;
+  min-height: 0;
+  font-size: 0.55rem;
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -947,7 +950,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
+  padding: max(0.75rem, var(--safe-t)) 0.75rem max(0.75rem, var(--safe-b));
 }
 
 .sheet {
@@ -1625,15 +1628,56 @@
 
 @media (min-width: 480px) {
   .app-shell {
-    padding-top: 1.25rem;
+    padding-top: calc(1.25rem + var(--safe-t));
+    --tab-h: 3.1rem;
+  }
+
+  .mode-bar__btn {
+    min-height: 2.6rem;
+    font-size: 0.8rem;
+  }
+
+  .month-header {
+    grid-template-columns: 2.75rem 1fr 2.75rem;
+    padding: 0.7rem 0.5rem 0.45rem;
+  }
+
+  .month-title {
+    font-size: 1.15rem;
+  }
+
+  .month-title__net {
+    font-size: 0.78rem;
+  }
+
+  .nav-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
   }
 
   .month-grid {
-    grid-auto-rows: minmax(5.2rem, 1fr);
+    grid-auto-rows: 2.9rem;
+    gap: 0.12rem;
+    padding: 0.2rem 0.3rem 0.35rem;
   }
 
   .day-cell {
-    min-height: 5.2rem;
+    min-height: 0;
+    padding: 0.16rem 0.12rem 0.18rem;
+  }
+
+  .day-cell__num {
+    font-size: 0.72rem;
+  }
+
+  .day-cell.is-today .day-cell__num {
+    min-width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .day-cell__money {
+    font-size: 0.58rem;
   }
 }
 
